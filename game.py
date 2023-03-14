@@ -84,8 +84,8 @@ class Character:
         init func
         """
         self.name = name
-        self.__desc = ''
-        self.__conversation = ''
+        self._desc = ''
+        self._conversation = ''
         self.weakness = ''
         self._item = None
 
@@ -93,7 +93,7 @@ class Character:
         """
         setter for conversation
         """
-        self.__conversation = conversation
+        self._conversation = conversation
 
     def set_weakness(self, weakness: str):
         """
@@ -106,13 +106,13 @@ class Character:
         output info about enemy in room
         """
         print(f'{self.name} is here')
-        print(self.__desc)
+        print(self._desc)
 
     def talk(self):
         """
         func to talk with enemy
         """
-        return f'[{self.name} says]: {self.__conversation}'
+        return f'[{self.name} says]: {self._conversation}'
 
     def set_item(self, item: object):
         """
@@ -125,23 +125,24 @@ class Item:
     """
     class representation item
     """
-    def __init__(self, name: str, power: int) -> None:
+    def __init__(self, name: str) -> None:
         self.name = name
-        self.__description = None
-        self.power = power
+        self._description = None
+        self.power = None
+        self._life = 1
 
     def set_description(self, desc: str):
         """
         setter for description of item
         """
-        self.__description = desc
+        self._description = desc
 
     def describe(self):
         """
         output info about item in room
         """
         print(f'The [{self.name}] is here', end=' - ')
-        print(self.__description)
+        print(self._description)
 
     def get_name(self):
         """
@@ -149,38 +150,65 @@ class Item:
         """
         if self.name:
             return self.name
+        
+    def using_item(self):
+        """
+        using item counter
+        """
+        self._life -= 1
 
+    def set_power(self, power: int):
+        """
+        setter for items power
+        """
+        self.power = power
+
+class SuperItem(Item):
+    """
+    class representation superitem
+    """
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+        self._life = 3
+
+    def set_power(self, power: int):
+        """
+        setter superitems power
+        """
+        if power > 100:
+            return power
 
 class Enemy(Character):
     """
     class representation enemy
     """
 
-    def __init__(self, name: str) -> None:
-        """
-        init func
-        """
-        super().__init__(name)
+    __defeated = 0
 
-    def fight(self, fight_with: object):
-        """
-        func generate a fight between two characters
-        """
-        win = random.choice([0, 0, 1, 1, 1])
-        if win == 1:
-            print(f'You fend {self.name} off with the {fight_with}')
-            return True
-        else:
-            print(f'{self.name} crushes you, puny adventurer!')
-            return False
+    # def fight(self, fight_with: object):
+    #     """
+    #     func generate a fight between two characters
+    #     """
+    #     win = random.choice([0, 0, 1, 1, 1])
+    #     if win == 1:
+    #         print(f'You fend {self.name} off with the {fight_with}')
+    #         return True
+    #     else:
+    #         print(f'{self.name} crushes you, puny adventurer!')
+    #         return False
 
-    def get_defeated(self):
-        """
-        getter for defeated enemies
-        """
-        Enemy.__defeated =+ 1
-        return Enemy.__defeated
+    # def get_defeated(self):
+    #     """
+    #     getter for defeated enemies
+    #     """
+    #     Enemy.__defeated =+ 1
+    #     return Enemy.__defeated
 
+    def losing_item(self):
+        """
+        remove item from enemy
+        """
+        self._item = None
 class Friend(Character):
     """
     class representation enemy
@@ -193,3 +221,22 @@ class Friend(Character):
         trade_item = self._item
         self._item = item
         return trade_item
+
+class Boss(Enemy):
+    """
+    class representation Boss
+    """
+
+    def __init__(self, name: str) -> None:
+        """
+        init func
+        """
+        super().__init__(name)
+        self.__super_item = None
+
+    def set_superitem(self, super_item):
+        """
+        setter for super_item
+        """
+        if isinstance(super_item, Item):
+            self.__super_item = super_item
