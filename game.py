@@ -74,17 +74,23 @@ class Room:
         if direction in self.__conected_rooms:
             return self.__conected_rooms[direction]
 
+    def set_description(self, description: str):
+        """
+        setter game description
+        """
+        self.__room_desc = description
+
 class Character:
     """
     class representation game room
     """
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, description: str) -> None:
         """
         init func
         """
         self.name = name
-        self._desc = ''
+        self._desc = description
         self._conversation = ''
         self.weakness = ''
         self._item = None
@@ -161,16 +167,9 @@ class Veapon(Item):
     """
     class representation veapon
     """
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, power: int) -> None:
         super().__init__(name)
-        self.power = None
-
-    def set_power(self, power: int):
-        """
-        setter for items power
-        """
         self.power = power
-
 class HelpItem(Item):
     """
     class representation help item
@@ -221,6 +220,9 @@ class Friend(Character):
     class representation enemy
     """
 
+    def __init__(self, name: str, description: str) -> None:
+        super().__init__(name, description)
+
     def trade(self, item: Item):
         """
         func for trade with main character
@@ -229,33 +231,30 @@ class Friend(Character):
         self._item = item
         return trade_item
 
-class Boss(Enemy):
-    """
-    class representation Boss
-    """
+# class Boss(Enemy):
+#     """
+#     class representation Boss
+#     """
 
-    def __init__(self, name: str) -> None:
-        """
-        init func
-        """
-        super().__init__(name)
-        self.__super_item = None
+#     def __init__(self, name: str, decs: str) -> None:
+#         super().__init__(name, decs)
+#         self.__super_item = None
 
-    def set_superitem(self, super_item):
-        """
-        setter for super_item
-        """
-        if isinstance(super_item, Item):
-            self.__super_item = super_item
+#     def set_superitem(self, super_item):
+#         """
+#         setter for super_item
+#         """
+#         if isinstance(super_item, Item):
+#             self.__super_item = super_item
 
 class Hero(Character):
     """
     class representation veapon
     """
 
-    def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.helth = 2
+    def __init__(self, name: str, decs: str) -> None:
+        super().__init__(name, decs)
+        self.helth = 1
         self._item = []
 
     def set_item(self, item: object):

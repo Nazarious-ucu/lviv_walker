@@ -21,33 +21,124 @@ freedom_p.set_description("Площа біля оперного театру. Т
 freedom_s = game.Room("Проспект свободи")
 freedom_s.set_description("Одна з найбільших вулиць міста, а ще тут є ринок")
 
-freedom_s = game.Room("Автобус")
-freedom_s.set_description("Великий автобус, де можна зустріти різних людей")
+bus = game.Room("Автобус")
+bus.set_description("Великий автобус, де можна зустріти різних людей")
 
+stryskiy_park = game.Room("Стризький парк")
+stryskiy_park.set_description("Дуже красиве місце")
 
+svencic = game.Room("Корпус УКУ на Свенціцького")
+svencic.set_description("Мальовниче місце з гуманітарними студентами")
 
-# railway.link_room(horodotska, "south")
-# horodotska.link_room(railway, "north")
-# horodotska.link_room(opernui, "west")
-# opernui.link_room(horodotska, "east")
+cumpus = game.Room("Кампус")
+cumpus.set_description("Це серце УКУ")
 
-dave = game.Enemy("Dave", "A smelly zombie")
-dave.set_conversation("What's up, dude! I'm hungry.")
-dave.set_weakness("cheese")
-horodotska.set_character(dave)
+railway.link_room(horodotska, "south")
+horodotska.link_room(railway, "north")
 
-tabitha = game.Enemy("Tabitha", "An enormous spider with countless eyes and furry legs.")
-tabitha.set_conversation("Sssss....I'm so bored...")
-tabitha.set_weakness("book")
-opernui.set_character(tabitha)
+horodotska.link_room(runok, "west")
+runok.link_room(horodotska, "east")
 
-cheese = game.Item("cheese")
-cheese.set_description("A large and smelly block of cheese")
-opernui.set_item(cheese)
+horodotska.link_room(opernui, "east")
+opernui.link_room(horodotska, "west")
 
-book = game.Item("book")
-book.set_description("A really good book entitled 'Knitting for dummies'")
-horodotska.set_item(book)
+runok.link_room(opernui, "north")
+opernui.link_room(runok, "south")
+
+opernui.link_room(freedom_p, "north")
+freedom_p.link_room(opernui, "south")
+
+opernui.link_room(freedom_s, "east")
+freedom_s.link_room(opernui, "west")
+
+freedom_p.link_room(freedom_s, "north")
+freedom_s.link_room(freedom_p, "south")
+
+freedom_s.link_room(bus, "east")
+bus.link_room(freedom_p, "west")
+
+bus.link_room(stryskiy_park, "north")
+stryskiy_park.link_room(freedom_p, "south")
+
+bus.link_room(svencic, "east")
+svencic.link_room(freedom_p, "west")
+
+stryskiy_park.link_room(svencic, "west")
+svencic.link_room(freedom_p, "east")
+
+stryskiy_park.link_room(cumpus, "north")
+cumpus.link_room(freedom_p, "south")
+
+dave = game.Friend("Dave", "Торгаш")
+dave.set_conversation("Я хочу викидати одну річ, не хочеш забрати")
+dave.set_weakness("Скрипка")
+runok.set_character(dave)
+
+nazar = game.Friend("Nazar", "Акторко")
+nazar.set_conversation("Я працюю в оперному, і  у мене поломалася скрипка:(")
+nazar.set_weakness("Нічого")
+opernui.set_character(nazar)
+
+danya = game.Enemy("Данило", "Вуличний музикант")
+danya.set_conversation("Заплатіть мені грошей")
+danya.set_weakness("Струни від гітари")
+freedom_p.set_character(danya)
+
+noy = game.Friend("Ной", "Прохожий")
+noy.set_conversation("Я тут просто іду на роботу, хочу кави")
+noy.set_weakness("Кросовок")
+freedom_s.set_character(noy)
+
+bogdan = game.Enemy("Богдан", "Маршрутчик")
+bogdan.set_conversation("Передавайте за проїзд")
+bogdan.set_weakness("Руль")
+bus.set_character(bogdan)
+
+petrovuch = game.Enemy("Петрович", "Бомж")
+petrovuch.set_conversation("Я живу в стризькому під лавкою, у тебе є пиво?")
+petrovuch.set_weakness("Розбита пляшка")
+stryskiy_park.set_character(petrovuch)
+
+student = game.Enemy("Єрена", "Соціологиня")
+student.set_conversation("Я дуже змучена")
+student.set_weakness("Опитування")
+svencic.set_character(student)
+
+stick = game.Veapon("Палка", 20)
+stick.set_description("Дерев'яна")
+railway.set_item(stick)
+
+syringe = game.Veapon("Шприц", 45)
+syringe.set_description("Колючий")
+horodotska.set_item(syringe)
+
+violing = game.Item("Скрипка")
+violing.set_description("Корисна")
+dave.set_item(violing)
+
+cofee = game.Item("Кава")
+cofee.set_description("гаряча та смачна")
+nazar.set_item(cofee)
+
+strings = game.HelpItem("Пісня")
+strings.set_description("Прекрасна")
+danya.set_item(strings)
+
+knife = game.Veapon("Ніж", 60)
+knife.set_description("Хороша зброя")
+noy.set_item(knife)
+
+handlebar = game.Veapon("Руль", 50)
+handlebar.set_description("Круглий")
+bogdan.set_item(handlebar)
+
+survey = game.Veapon("Опитування", 80)
+survey.set_description("Набридливе")
+student.set_item(survey)
+
+botlle = game.Veapon("Побита бутилка", 65)
+botlle.set_description("Розбита")
+petrovuch.set_item(botlle)
 
 current_room = railway
 backpack = []
