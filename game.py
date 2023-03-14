@@ -128,7 +128,6 @@ class Item:
     def __init__(self, name: str) -> None:
         self.name = name
         self._description = None
-        self.power = None
         self._life = 1
 
     def set_description(self, desc: str):
@@ -150,12 +149,21 @@ class Item:
         """
         if self.name:
             return self.name
-        
+
     def using_item(self):
         """
         using item counter
         """
         self._life -= 1
+
+
+class Veapon(Item):
+    """
+    class representation veapon
+    """
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+        self.power = None
 
     def set_power(self, power: int):
         """
@@ -163,21 +171,20 @@ class Item:
         """
         self.power = power
 
-class SuperItem(Item):
+class HelpItem(Item):
     """
-    class representation superitem
+    class representation help item
     """
     def __init__(self, name: str) -> None:
         super().__init__(name)
-        self._life = 3
+        self.cure_helth = 1
 
-    def set_power(self, power: int):
+    def helth(self, __o: object):
         """
-        setter superitems power
+        healing hero
         """
-        if power > 100:
-            return power
-
+        if isinstance(__o, Hero):
+            self.cure_helth -= 1
 class Enemy(Character):
     """
     class representation enemy
@@ -240,3 +247,20 @@ class Boss(Enemy):
         """
         if isinstance(super_item, Item):
             self.__super_item = super_item
+
+class Hero(Character):
+    """
+    class representation veapon
+    """
+
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+        self.helth = 2
+        self._item = []
+
+    def set_item(self, item: object):
+       """
+       setter for item
+       """
+       if isinstance(item, Item):
+           self._item.append(item)    

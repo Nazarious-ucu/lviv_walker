@@ -3,39 +3,53 @@ lab4 task6
 """
 import game
 
-kitchen = game.Room("Kitchen")
-kitchen.set_description("A dank and dirty room buzzing with flies.")
+railway = game.Room("Залізнична станція")
+railway.set_description("Залізнична станція, від якої всі добирається до Львова")
 
-dining_hall = game.Room("Dining Hall")
-dining_hall.set_description("A large room with ornate golden decorations on each wall.")
+horodotska = game.Room("Городоцька")
+horodotska.set_description("Одна з найбільших вулиць міста, а ще тут є ринок")
 
-ballroom = game.Room("Ballroom")
-ballroom.set_description("A vast room with a shiny wooden floor. Huge candlesticks guard the entrance.")
+runok = game.Room("Ринок")
+runok.set_description("Тут продається багато різної всячини")
 
-kitchen.link_room(dining_hall, "south")
-dining_hall.link_room(kitchen, "north")
-dining_hall.link_room(ballroom, "west")
-ballroom.link_room(dining_hall, "east")
+opernui = game.Room("Опериний театр")
+opernui.set_description("Головна пам'ятка міста. Тут є багато музикантів")
+
+freedom_p = game.Room("Площа свободи")
+freedom_p.set_description("Площа біля оперного театру. Тут часто грають вуличні музиканти")
+
+freedom_s = game.Room("Проспект свободи")
+freedom_s.set_description("Одна з найбільших вулиць міста, а ще тут є ринок")
+
+freedom_s = game.Room("Автобус")
+freedom_s.set_description("Великий автобус, де можна зустріти різних людей")
+
+
+
+# railway.link_room(horodotska, "south")
+# horodotska.link_room(railway, "north")
+# horodotska.link_room(opernui, "west")
+# opernui.link_room(horodotska, "east")
 
 dave = game.Enemy("Dave", "A smelly zombie")
 dave.set_conversation("What's up, dude! I'm hungry.")
 dave.set_weakness("cheese")
-dining_hall.set_character(dave)
+horodotska.set_character(dave)
 
 tabitha = game.Enemy("Tabitha", "An enormous spider with countless eyes and furry legs.")
 tabitha.set_conversation("Sssss....I'm so bored...")
 tabitha.set_weakness("book")
-ballroom.set_character(tabitha)
+opernui.set_character(tabitha)
 
 cheese = game.Item("cheese")
 cheese.set_description("A large and smelly block of cheese")
-ballroom.set_item(cheese)
+opernui.set_item(cheese)
 
 book = game.Item("book")
 book.set_description("A really good book entitled 'Knitting for dummies'")
-dining_hall.set_item(book)
+horodotska.set_item(book)
 
-current_room = kitchen
+current_room = railway
 backpack = []
 
 dead = False
