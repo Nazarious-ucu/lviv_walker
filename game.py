@@ -184,43 +184,16 @@ class HelpItem(Item):
         """
         if isinstance(__o, Hero):
             self.cure_helth -= 1
-class Enemy(Character):
-    """
-    class representation enemy
-    """
 
-    __defeated = 0
-
-    # def fight(self, fight_with: object):
-    #     """
-    #     func generate a fight between two characters
-    #     """
-    #     win = random.choice([0, 0, 1, 1, 1])
-    #     if win == 1:
-    #         print(f'You fend {self.name} off with the {fight_with}')
-    #         return True
-    #     else:
-    #         print(f'{self.name} crushes you, puny adventurer!')
-    #         return False
-
-    # def get_defeated(self):
-    #     """
-    #     getter for defeated enemies
-    #     """
-    #     Enemy.__defeated =+ 1
-    #     return Enemy.__defeated
-
-    def losing_item(self):
-        """
-        remove item from enemy
-        """
-        self._item = None
 class Friend(Character):
     """
     class representation enemy
     """
 
     def __init__(self, name: str, description: str) -> None:
+        """
+        init func
+        """
         super().__init__(name, description)
 
     def trade(self, item: Item):
@@ -230,23 +203,6 @@ class Friend(Character):
         trade_item = self._item
         self._item = item
         return trade_item
-
-# class Boss(Enemy):
-#     """
-#     class representation Boss
-#     """
-
-#     def __init__(self, name: str, decs: str) -> None:
-#         super().__init__(name, decs)
-#         self.__super_item = None
-
-#     def set_superitem(self, super_item):
-#         """
-#         setter for super_item
-#         """
-#         if isinstance(super_item, Item):
-#             self.__super_item = super_item
-
 class Hero(Character):
     """
     class representation veapon
@@ -255,11 +211,50 @@ class Hero(Character):
     def __init__(self, name: str, decs: str) -> None:
         super().__init__(name, decs)
         self.helth = 1
-        self._item = []
+        self._items = []
 
     def set_item(self, item: object):
        """
        setter for item
        """
        if isinstance(item, Item):
-           self._item.append(item)    
+           self._items.append(item)
+
+    def choose_item(self):
+        print('Виберіть зброю, щоб битися серед:')
+        print([f'{i}. {elem} ' for i, elem in enumerate(self._items, 1)])
+        num = input('вибірть цифру зброї')
+        return self._items[num - 1%len(self._item)]
+
+class Enemy(Character):
+    """
+    class representation enemy
+    """
+
+    __defeated = 0
+
+    def fight(self, __o: Hero):
+        """
+        func generate a fight between two characters
+        """
+        fight_with = __o.choose_item()
+        win = random.choice([1]*fight_with.power + [0]*self._item.power)
+        if win == 1:
+            print(f'You fend {self.name} off with the {fight_with}')
+            return True
+        else:
+            print(f'{self.name} crushes you, puny adventurer!')
+            return False
+
+    def get_defeated(self):
+        """
+        getter for defeated enemies
+        """
+        Enemy.__defeated =+ 1
+        return Enemy.__defeated
+
+    def losing_item(self):
+        """
+        remove item from enemy
+        """
+        self._item = None

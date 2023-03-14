@@ -141,7 +141,6 @@ botlle.set_description("Розбита")
 petrovuch.set_item(botlle)
 
 current_room = railway
-backpack = []
 
 dead = False
 
