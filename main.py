@@ -2,6 +2,9 @@
 lab4 task6
 """
 import game
+import random
+
+main_hero = game.Hero('Nazarchuk', 'Крутиай чувак')
 
 railway = game.Room("Залізнична станція")
 railway.set_description("Залізнична станція, від якої всі добирається до Львова")
@@ -170,16 +173,19 @@ while dead == False:
         if inhabitant is not None:
             # Fight with the inhabitant, if there is one
             print("What will you fight with?")
-            fight_with = input()
+            fight_with = main_hero.choose_item()
 
             # Do I have this item?
-            if fight_with in backpack:
+            if main_hero.items:
 
                 if inhabitant.fight(fight_with) == True:
                     # What happens if you win?
                     print("Hooray, you won the fight!")
                     current_room.character = None
-                    if inhabitant.get_defeated() == 2:
+                    if random.randint(0, 2):
+                        main_hero.set_item(inhabitant.item)
+
+                    if inhabitant.get_defeated() == 3:
                         print("Congratulations, you have vanquished the enemy horde!")
                         dead = True
                 else:
@@ -191,10 +197,13 @@ while dead == False:
                 print("You don't have a " + fight_with)
         else:
             print("There is no one here to fight with")
+    elif command == 'trade' and isinstance(inhabitant, game.Friend) and inhabitant.trade(main_hero.choose_item()):
+        inhabitant.trade(main_hero.choose_item())
+        print("Ви успішно помінялися речами")
     elif command == "take":
         if item is not None:
             print("You put the " + item.get_name() + " in your backpack")
-            backpack.append(item.get_name())
+            main_hero.set_item(item)
             current_room.set_item(None)
         else:
             print("There's nothing here to take!")

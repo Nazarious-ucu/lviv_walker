@@ -26,9 +26,8 @@ class Room:
         if isinstance(__o, Room):
             self.__conected_rooms[direction] = __o
             self.__link_rooms_info = '\n'.join(\
-                [f'The {self.__conected_rooms[key].room_name} is {key}'\
+                [f'The {self.__conected_rooms[key].name} is {key}'\
                 for key in self.__conected_rooms])
-        print('BAD ROOM')
 
     def set_character(self, character: object):
         """
@@ -93,7 +92,7 @@ class Character:
         self._desc = description
         self._conversation = ''
         self.weakness = ''
-        self._item = None
+        self.item = None
 
     def set_conversation(self, conversation: str):
         """
@@ -125,7 +124,7 @@ class Character:
         setter for item for character
         """
         if isinstance(item, Item):
-            self._item = item
+            self.item = item
 
 class Item:
     """
@@ -170,6 +169,13 @@ class Veapon(Item):
     def __init__(self, name: str, power: int) -> None:
         super().__init__(name)
         self.power = power
+
+    def describe(self):
+        """
+        output info about enemy in room
+        """
+        super().describe()
+        print(self.power)
 class HelpItem(Item):
     """
     class representation help item
@@ -211,20 +217,24 @@ class Hero(Character):
     def __init__(self, name: str, decs: str) -> None:
         super().__init__(name, decs)
         self.helth = 1
-        self._items = []
+        self.items   = []
 
     def set_item(self, item: object):
        """
        setter for item
        """
        if isinstance(item, Item):
-           self._items.append(item)
+           self.items.append(item)
 
     def choose_item(self):
-        print('Виберіть зброю, щоб битися серед:')
-        print([f'{i}. {elem} ' for i, elem in enumerate(self._items, 1)])
-        num = input('вибірть цифру зброї')
-        return self._items[num - 1%len(self._item)]
+        print('Виберіть чим будете торгуватися:')
+        for i, elem in enumerate(self.items, 1):
+            print(f'{i}. {elem.name} power:', end=' ')
+            if isinstance(elem, Veapon):
+                print(elem.power, end='')
+            print(' | ', end='')
+        num = input('\n вибірть цифру зброї')
+        return self.items[num - 1%len(self.items)]
 
 class Enemy(Character):
     """
