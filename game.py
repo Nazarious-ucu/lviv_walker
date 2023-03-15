@@ -206,7 +206,7 @@ class Friend(Character):
         """
         func for trade with main character
         """
-        trade_item = self._item
+        trade_item = self.item
         self._item = item
         return trade_item
 class Hero(Character):
@@ -227,14 +227,18 @@ class Hero(Character):
            self.items.append(item)
 
     def choose_item(self):
-        print('Виберіть чим будете торгуватися:')
-        for i, elem in enumerate(self.items, 1):
-            print(f'{i}. {elem.name} power:', end=' ')
-            if isinstance(elem, Veapon):
-                print(elem.power, end='')
-            print(' | ', end='')
-        num = input('\n вибірть цифру зброї')
-        return self.items[num - 1%len(self.items)]
+        if self.items:
+            print('Виберіть чим будете торгуватися:')
+            for i, elem in enumerate(self.items, 1):
+                print(f'{i}. {elem.name} power:', end=' ')
+                if isinstance(elem, Veapon):
+                    print(elem.power, end='')
+                print(' | ', end='')
+            num = int(input('\n вибірть цифру зброї'))
+            num = (num - 1)%len(self.items)
+            result = self.items[num]
+            self.items.remove(result)
+            return result
 
 class Enemy(Character):
     """
@@ -243,14 +247,14 @@ class Enemy(Character):
 
     __defeated = 0
 
-    def fight(self, __o: Hero):
+    def fight(self, __o: Veapon):
         """
         func generate a fight between two characters
         """
-        fight_with = __o.choose_item()
-        win = random.choice([1]*fight_with.power + [0]*self._item.power)
+        # __o.fight_with = __o.choose_item()
+        win = random.choice([1]*__o.power + [0]*self.item.power)
         if win == 1:
-            print(f'You fend {self.name} off with the {fight_with}')
+            print(f'You fend {self.name} off with the {__o.name}')
             return True
         else:
             print(f'{self.name} crushes you, puny adventurer!')

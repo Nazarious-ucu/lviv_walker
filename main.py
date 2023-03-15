@@ -82,7 +82,7 @@ nazar.set_conversation("Я працюю в оперному, і  у мене п�
 nazar.set_weakness("Нічого")
 opernui.set_character(nazar)
 
-danya = game.Enemy("Данило", "Вуличний музикант")
+danya = game.Friend("Данило", "Вуличний музикант")
 danya.set_conversation("Заплатіть мені грошей")
 danya.set_weakness("Струни від гітари")
 freedom_p.set_character(danya)
@@ -197,8 +197,11 @@ while dead == False:
                 print("You don't have a " + fight_with)
         else:
             print("There is no one here to fight with")
-    elif command == 'trade' and isinstance(inhabitant, game.Friend) and inhabitant.trade(main_hero.choose_item()):
-        inhabitant.trade(main_hero.choose_item())
+    elif command == 'trade' and isinstance(inhabitant, game.Friend) \
+        and inhabitant.trade(main_hero.choose_item()):
+        main_hero.set_item(inhabitant.trade(main_hero.choose_item()))
+
+        print(f'у вашому рюкзаку є: {" ".join([elem.name for elem in main_hero.items])}')
         print("Ви успішно помінялися речами")
     elif command == "take":
         if item is not None:
